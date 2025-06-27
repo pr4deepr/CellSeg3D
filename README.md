@@ -22,9 +22,7 @@
 
 ## Documentation
 
-📚 Documentation is available at [https://AdaptiveMotorControlLab.github.io/CellSeg3D
-](https://adaptivemotorcontrollab.github.io/CellSeg3D/welcome.html)
-
+📚 Documentation is available at [https://AdaptiveMotorControlLab.github.io/CellSeg3D](https://adaptivemotorcontrollab.github.io/CellSeg3D/welcome.html)
 
 📚 For additional examples and how to reproduce our paper figures, see: [https://github.com/C-Achard/cellseg3d-figures](https://github.com/C-Achard/cellseg3d-figures)
 
@@ -38,7 +36,7 @@ To use the plugin, please run:
 ```
 napari
 ```
-Then go into `Plugins > napari_cellseg3d`, and choose which tool to use. 
+Then go into `Plugins > napari_cellseg3d`, and choose which tool to use.
 
 - **Review (label)**: This module allows you to review your labels, from predictions or manual labeling, and correct them if needed. It then saves the status of each file in a csv, for easier monitoring.
 - **Inference**: This module allows you to use pre-trained segmentation algorithms on volumes to automatically label cells and compute statistics.
@@ -64,11 +62,11 @@ F1-score is computed from the Intersection over Union (IoU) with ground truth la
 
 ## News
 
-**CellSeg3D now published at eLife !**
+### **CellSeg3D now published at eLife**
 
 Read the [article here !](https://elifesciences.org/articles/99848)
 
-**New version: v0.2.2**
+### **New version: v0.2.2**
 
 - v0.2.2:
   - Updated the Colab Notebooks for training and inference
@@ -98,8 +96,6 @@ Previous additions:
   - Dedicated installation page, and working ARM64 install for macOS Silicon users
 - New utilities
 - Many small improvements and many bug fixes
-
-
 
 
 ## Requirements

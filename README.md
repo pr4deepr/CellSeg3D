@@ -1,5 +1,5 @@
 # CellSeg3D: self-supervised (and supervised) 3D cell segmentation, primarily for mesoSPIM data!
-[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari_cellseg3d)](https://www.napari-hub.org/plugins/napari_cellseg3d)
+[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-cellseg3d)](https://www.napari-hub.org/plugins/napari_cellseg3d)
 [![PyPI](https://img.shields.io/pypi/v/napari-cellseg3d.svg?color=green)](https://pypi.org/project/napari-cellseg3d)
 [![Downloads](https://static.pepy.tech/badge/napari-cellseg3d)](https://pepy.tech/project/napari-cellseg3d)
 [![Downloads](https://static.pepy.tech/badge/napari-cellseg3d/month)](https://pepy.tech/project/napari-cellseg3d)
@@ -22,9 +22,7 @@
 
 ## Documentation
 
-📚 Documentation is available at [https://AdaptiveMotorControlLab.github.io/CellSeg3D
-](https://adaptivemotorcontrollab.github.io/CellSeg3D/welcome.html)
-
+📚 Documentation is available at [https://AdaptiveMotorControlLab.github.io/CellSeg3D](https://adaptivemotorcontrollab.github.io/CellSeg3D/welcome.html)
 
 📚 For additional examples and how to reproduce our paper figures, see: [https://github.com/C-Achard/cellseg3d-figures](https://github.com/C-Achard/cellseg3d-figures)
 
@@ -38,7 +36,7 @@ To use the plugin, please run:
 ```
 napari
 ```
-Then go into `Plugins > napari_cellseg3d`, and choose which tool to use. 
+Then go into `Plugins > napari_cellseg3d`, and choose which tool to use.
 
 - **Review (label)**: This module allows you to review your labels, from predictions or manual labeling, and correct them if needed. It then saves the status of each file in a csv, for easier monitoring.
 - **Inference**: This module allows you to use pre-trained segmentation algorithms on volumes to automatically label cells and compute statistics.
@@ -64,7 +62,11 @@ F1-score is computed from the Intersection over Union (IoU) with ground truth la
 
 ## News
 
-**New version: v0.2.2**
+### **CellSeg3D now published at eLife**
+
+Read the [article here !](https://elifesciences.org/articles/99848)
+
+### **New version: v0.2.2**
 
 - v0.2.2:
   - Updated the Colab Notebooks for training and inference
@@ -96,20 +98,21 @@ Previous additions:
 - Many small improvements and many bug fixes
 
 
-
-
 ## Requirements
 
 **Compatible with Python 3.8 to 3.10.**
 Requires **[napari]**, **[PyTorch]** and **[MONAI]**.
 Compatible with Windows, MacOS and Linux.
-Installation should not take more than 30 minutes, depending on your internet connection.
+Installation of the plugin itself should not take more than 30 minutes, depending on your internet connection,
+and whether you already have Python and a package manager installed.
 
 For PyTorch, please see [the PyTorch website for installation instructions].
 
 A CUDA-capable GPU is not needed but very strongly recommended, especially for training.
 
 If you get errors from MONAI regarding missing readers, please see [MONAI's optional dependencies] page for instructions on getting the readers required by your images.
+
+Please reach out if you have any issues with the installation, we will be happy to help!
 
 ### Install note for ARM64 (Silicon) Mac users
 
@@ -187,18 +190,27 @@ Distributed under the terms of the [MIT] license.
 ## Citation
 
 ```
-@article {Achard2024,
-	author = {Achard, Cyril and Kousi, Timokleia and Frey, Markus and Vidal, Maxime and Paychere, Yves and Hofmann, Colin and Iqbal, Asim and Hausmann, Sebastien B. and Pages, Stephane and Mathis, Mackenzie W.},
-	title = {CellSeg3D: self-supervised 3D cell segmentation for microscopy},
-	elocation-id = {2024.05.17.594691},
-	year = {2024},
-	doi = {10.1101/2024.05.17.594691},
-	publisher = {Cold Spring Harbor Laboratory},
-	URL = {https://www.biorxiv.org/content/early/2024/05/17/2024.05.17.594691},
-	eprint = {https://www.biorxiv.org/content/early/2024/05/17/2024.05.17.594691.full.pdf},
-	journal = {bioRxiv}
+@article {10.7554/eLife.99848,
+article_type = {journal},
+title = {CellSeg3D, Self-supervised 3D cell segmentation for fluorescence microscopy},
+author = {Achard, Cyril and Kousi, Timokleia and Frey, Markus and Vidal, Maxime and Paychere, Yves and Hofmann, Colin and Iqbal, Asim and Hausmann, Sebastien B and Pagès, Stéphane and Mathis, Mackenzie Weygandt},
+editor = {Cardona, Albert},
+volume = 13,
+year = 2025,
+month = {jun},
+pub_date = {2025-06-24},
+pages = {RP99848},
+citation = {eLife 2025;13:RP99848},
+doi = {10.7554/eLife.99848},
+url = {https://doi.org/10.7554/eLife.99848},
+abstract = {Understanding the complex three-dimensional structure of cells is crucial across many disciplines in biology and especially in neuroscience. Here, we introduce a set of models including a 3D transformer (SwinUNetR) and a novel 3D self-supervised learning method (WNet3D) designed to address the inherent complexity of generating 3D ground truth data and quantifying nuclei in 3D volumes. We developed a Python package called CellSeg3D that provides access to these models in Jupyter Notebooks and in a napari GUI plugin. Recognizing the scarcity of high-quality 3D ground truth data, we created a fully human-annotated mesoSPIM dataset to advance evaluation and benchmarking in the field. To assess model performance, we benchmarked our approach across four diverse datasets: the newly developed mesoSPIM dataset, a 3D platynereis-ISH-Nuclei confocal dataset, a separate 3D Platynereis-Nuclei light-sheet dataset, and a challenging and densely packed Mouse-Skull-Nuclei confocal dataset. We demonstrate that our self-supervised model, WNet3D – trained without any ground truth labels – achieves performance on par with state-of-the-art supervised methods, paving the way for broader applications in label-scarce biological contexts.},
+keywords = {self-supervised learning, artificial intelligence, neuroscience, mesoSPIM, confocal microscopy, platynereis},
+journal = {eLife},
+issn = {2050-084X},
+publisher = {eLife Sciences Publications, Ltd},
 }
 ```
+
 ## Acknowledgements
 
 This plugin was developed by originally Cyril Achard, Maxime Vidal, Mackenzie Mathis.

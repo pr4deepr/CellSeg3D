@@ -45,7 +45,7 @@ class SwinUNETR_(SwinUNETR):
         except TypeError as e:
             logger.warning(f"Caught TypeError: {e}")
             super().__init__(
-                # img_size=input_img_size,
+                img_size=input_img_size, # hack for compatibility, latest MONAI for py3.9 does not have img_size but py3.8 does
                 in_channels=1,
                 out_channels=1,
                 feature_size=48,

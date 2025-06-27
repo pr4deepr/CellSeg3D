@@ -32,7 +32,7 @@ class SwinUNETR_(SwinUNETR):
         """
         try:
             super().__init__(
-                # img_size=input_img_size,
+                input_img_size,
                 in_channels=in_channels,
                 out_channels=out_channels,
                 feature_size=48,
@@ -45,7 +45,7 @@ class SwinUNETR_(SwinUNETR):
         except TypeError as e:
             logger.warning(f"Caught TypeError: {e}")
             super().__init__(
-                # input_img_size,
+                input_img_size,
                 in_channels=1,
                 out_channels=1,
                 feature_size=48,

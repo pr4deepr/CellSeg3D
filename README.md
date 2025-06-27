@@ -1,5 +1,5 @@
 # CellSeg3D: self-supervised (and supervised) 3D cell segmentation, primarily for mesoSPIM data!
-[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari_cellseg3d)](https://www.napari-hub.org/plugins/napari_cellseg3d)
+[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-cellseg3d)](https://www.napari-hub.org/plugins/napari_cellseg3d)
 [![PyPI](https://img.shields.io/pypi/v/napari-cellseg3d.svg?color=green)](https://pypi.org/project/napari-cellseg3d)
 [![Downloads](https://static.pepy.tech/badge/napari-cellseg3d)](https://pepy.tech/project/napari-cellseg3d)
 [![Downloads](https://static.pepy.tech/badge/napari-cellseg3d/month)](https://pepy.tech/project/napari-cellseg3d)

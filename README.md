@@ -107,13 +107,16 @@ Previous additions:
 **Compatible with Python 3.8 to 3.10.**
 Requires **[napari]**, **[PyTorch]** and **[MONAI]**.
 Compatible with Windows, MacOS and Linux.
-Installation should not take more than 30 minutes, depending on your internet connection.
+Installation of the plugin itself should not take more than 30 minutes, depending on your internet connection,
+and whether you already have Python and a package manager installed.
 
 For PyTorch, please see [the PyTorch website for installation instructions].
 
 A CUDA-capable GPU is not needed but very strongly recommended, especially for training.
 
 If you get errors from MONAI regarding missing readers, please see [MONAI's optional dependencies] page for instructions on getting the readers required by your images.
+
+Please reach out if you have any issues with the installation, we will be happy to help!
 
 ### Install note for ARM64 (Silicon) Mac users
 

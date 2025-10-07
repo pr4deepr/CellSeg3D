@@ -1,5 +1,7 @@
 """SwinUNetR wrapper for napari_cellseg3d."""
 
+import inspect
+
 from monai.networks.nets import SwinUNETR
 
 from napari_cellseg3d.utils import LOGGER
@@ -30,30 +32,30 @@ class SwinUNETR_(SwinUNETR):
         use_checkpoint (bool): whether to use checkpointing during training.
         **kwargs: additional arguments to SwinUNETR.
         """
+        parent_init = super().__init__
+        sig = inspect.signature(parent_init)
+        init_kwargs = dict(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            use_checkpoint=use_checkpoint,
+            feature_size=48,
+            drop_rate=0.5,
+            attn_drop_rate=0.5,
+            use_v2=True,
+            **kwargs,
+        )
+        if "img_size" in sig.parameters:
+            # since MONAI API changes depending on py3.8 or py3.9
+            init_kwargs["img_size"] = input_img_size
+        if "dropout_prob" in kwargs:
+            init_kwargs["drop_rate"] = kwargs["dropout_prob"]
+            init_kwargs.pop("dropout_prob")
         try:
-            super().__init__(
-                input_img_size,
-                in_channels=in_channels,
-                out_channels=out_channels,
-                feature_size=48,
-                use_checkpoint=use_checkpoint,
-                drop_rate=0.5,
-                attn_drop_rate=0.5,
-                use_v2=True,
-                **kwargs,
-            )
+            parent_init(**init_kwargs)
         except TypeError as e:
             logger.warning(f"Caught TypeError: {e}")
-            super().__init__(
-                input_img_size,
-                in_channels=1,
-                out_channels=1,
-                feature_size=48,
-                use_checkpoint=use_checkpoint,
-                drop_rate=0.5,
-                attn_drop_rate=0.5,
-                use_v2=True,
-            )
+            init_kwargs["in_channels"] = 1
+            parent_init(**init_kwargs)
 
     # def forward(self, x_in):
     #     y = super().forward(x_in)

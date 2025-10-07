@@ -1,4 +1,5 @@
 """SwinUNetR wrapper for napari_cellseg3d."""
+
 import inspect
 
 from monai.networks.nets import SwinUNETR
@@ -37,6 +38,7 @@ class SwinUNETR_(SwinUNETR):
             in_channels=in_channels,
             out_channels=out_channels,
             use_checkpoint=use_checkpoint,
+            feature_size=48,
             drop_rate=0.5,
             attn_drop_rate=0.5,
             use_v2=True,
@@ -45,6 +47,9 @@ class SwinUNETR_(SwinUNETR):
         if "img_size" in sig.parameters:
             # since MONAI API changes depending on py3.8 or py3.9
             init_kwargs["img_size"] = input_img_size
+        if "dropout_prob" in kwargs:
+            init_kwargs["drop_rate"] = kwargs["dropout_prob"]
+            init_kwargs.pop("dropout_prob")
         try:
             parent_init(**init_kwargs)
         except TypeError as e:

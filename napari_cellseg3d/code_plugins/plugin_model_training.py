@@ -1366,12 +1366,13 @@ class Trainer(ModelFramework, metaclass=ui.QWidgetSingleton):
             self._stop_requested = False
 
     def _check_lens(self, size_column, loss_values):
-        if len(size_column) != len(loss_values):
+        if size_column is None or len(size_column) != len(loss_values):
             logger.info(
                 f"Training was stopped, setting epochs for csv to {len(loss_values)}"
             )
             return range(1, len(loss_values) + 1)
-        return size_column
+        else:
+            return size_column
 
     def _handle_loss_values(self, size_column, key):
         loss_values = self.loss_1_values.get(key)

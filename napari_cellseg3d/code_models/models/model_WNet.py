@@ -52,5 +52,16 @@ class WNet_(WNet_encoder):
         for k in state_dict:
             if k.startswith("decoder"):
                 encoder_checkpoint.pop(k)
-        # print(encoder_checkpoint.keys())
-        super().load_state_dict(encoder_checkpoint, strict=strict)
+        #print(encoder_checkpoint.keys())
+        try:
+            result = super().load_state_dict(encoder_checkpoint, strict=strict)
+            print("Missing keys:", result.missing_keys)
+            print("Unexpected keys:", result.unexpected_keys)
+            return result
+        except Exception as e:
+            print(f"Exception during load_state_dict: {e}")
+            print(f"Exception type: {type(e)}")
+            #show model's expected keys for comparison
+            print("Model expected keys:", list(self.state_dict().keys())[:10])  #first 10 keys
+            print("Checkpoint keys:", list(encoder_checkpoint.keys())[:10])  #first 10 keys
+            raise e

@@ -303,6 +303,15 @@ def remap_image(
     image = image.flatten()
     im_max = prev_max if prev_max is not None else image.max()
     im_min = prev_min if prev_min is not None else image.min()
+    
+    #if min == max, returns NaN; image all zeros
+    if im_max == im_min:
+        # create a constant image at new_min value to resemble background
+        if isinstance(image, torch.Tensor):
+            return torch.full(shape, new_min, dtype=image.dtype, device=image.device)
+        else:
+            return np.full(shape, new_min, dtype=image.dtype)
+    
     image = (image - im_min) / (im_max - im_min)
     image = image * (new_max - new_min) + new_min
     image = image.reshape(shape)

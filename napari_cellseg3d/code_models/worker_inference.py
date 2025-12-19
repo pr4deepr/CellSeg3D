@@ -855,9 +855,70 @@ class InferenceWorker(GeneratorWorker):
                 self.log("Instantiating ONNX model...")
                 model = ONNXModelWrapper(weights_config.path)
             else:  # assume is .pth
+                self.log("Loading weights to inspect model configuration...")
+                if weights_config.use_custom:
+                    weights_path = weights_config.path
+                else:
+                    self.downloader.download_weights(
+                        model_name,
+                        model_class.weights_file,
+                    )
+                    weights_path = str(
+                        PRETRAINED_WEIGHTS_DIR / Path(model_class.weights_file)
+                    )
+                
+                # Load state dict to inspect number of classes
+                try:
+                    state_dict = torch.load(weights_path, map_location="cpu")
+                    
+                    # Find the output layer to determine number of classes
+                    num_classes = None
+                    
+                    # For WNet models, specifically check the encoder output layer
+                    if "encoder.out_b.module.8.weight" in state_dict:
+                        # This is the actual output layer that was causing the mismatch
+                        num_classes = state_dict["encoder.out_b.module.8.weight"].shape[0]
+                        self.log(f"Found WNet encoder output layer with {num_classes} classes")
+                    else:
+                        # Fallback to common output layer names
+                        possible_output_keys = [
+                            "segmentation_head.weight", "classifier.weight", "output.weight",
+                            "final_layer.weight", "out_conv.weight", "output_layer.weight"
+                        ]
+                        
+                        # Look for common output layer names
+                        for key in possible_output_keys:
+                            if key in state_dict:
+                                num_classes = state_dict[key].shape[0]  # First dimension is usually num_classes
+                                self.log(f"Found output layer '{key}' with {num_classes} classes")
+                                break
+                        
+                        # If not found with common names, look for any layer ending with specific patterns
+                        if num_classes is None:
+                            for key in state_dict.keys():
+                                if (key.endswith(".weight") and 
+                                    len(state_dict[key].shape) == 5 and  # Conv3d weight: [out_channels, in_channels, d, h, w]
+                                    "conv" in key.lower() and
+                                    any(name in key.lower() for name in ["final", "out", "seg", "class"])):
+                                    num_classes = state_dict[key].shape[0]
+                                    self.log(f"Inferred {num_classes} classes from layer '{key}'")
+                                    break
+                    
+                    # Update model_info with detected number of classes
+                    if num_classes is not None:
+                        self.log(f"Updating model configuration: {self.config.model_info.num_classes} -> {num_classes} classes")
+                        self.config.model_info.num_classes = num_classes
+                    else:
+                        self.log(f"Could not detect number of classes from weights, using default: {self.config.model_info.num_classes}")
+                        
+                except Exception as e:
+                    self.log(f"Warning: Could not inspect weights file: {e}")
+                    self.log(f"Using default number of classes: {self.config.model_info.num_classes}")
+                
                 self.log("Instantiating model...")
                 model = model_class(
                     input_img_size=[dims, dims, dims],
+                    out_channels=self.config.model_info.num_classes,
                     # device=self.config.device,
                     # num_classes=self.config.model_info.num_classes,
                 )
@@ -870,20 +931,11 @@ class InferenceWorker(GeneratorWorker):
                     raise ValueError("Model is None")
                 # try:
                 self.log("Loading weights...")
-                if weights_config.use_custom:
-                    weights = weights_config.path
-                else:
-                    self.downloader.download_weights(
-                        model_name,
-                        model_class.weights_file,
-                    )
-                    weights = str(
-                        PRETRAINED_WEIGHTS_DIR / Path(model_class.weights_file)
-                    )
+                
                 try:
                     missing = model.load_state_dict(  # note that this is redefined in WNet_
-                        torch.load(
-                            weights,
+                        state_dict if 'state_dict' in locals() else torch.load(
+                            weights_path,
                             map_location=self.config.device,
                         ),
                         strict=False,  # True, # TODO(cyril): change to True

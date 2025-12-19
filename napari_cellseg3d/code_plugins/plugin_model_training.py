@@ -1200,6 +1200,9 @@ class Trainer(ModelFramework, metaclass=ui.QWidgetSingleton):
             rec_loss_weight=self.wnet_widgets.get_reconstruction_weight(),
             eval_volume_dict=eval_volume_dict,
             eval_batch_size=eval_batch_size,
+            intensity_sigma=self.wnet_widgets.intensity_sigma_choice.value(),
+            spatial_sigma=self.wnet_widgets.spatial_sigma_choice.value(),
+            radius=self.wnet_widgets.radius_choice.value(),
         )
 
         return self.worker_config
